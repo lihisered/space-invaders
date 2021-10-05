@@ -2,22 +2,22 @@
 console.log('HERO');
 
 var gLaserInterval;
-const LASER_SPEED = 80;
+const LASER_SPEED = 30;
+const SUPER_LASER_SPEED = 10;
+var gSuperModeCount = 3;
 var gHero = { pos: { i: 12, j: 5 }, isShoot: false };
+var gIsNegs = false;
+var gIsSuper = false;
 
-// creates the hero and place it on board
 function createHero(board) {
     board[gHero.pos.i][gHero.pos.j].gameObject = HERO;
 }
 
-// Handle game keys
 function onKeyDown(ev) {
-    // console.log(ev);
     var i = gHero.pos.i;
     var j = gHero.pos.j;
     var dir = null;
     if (gGame.isOn) {
-
         switch (ev.key) {
             case 'ArrowLeft':
                 dir = { i, j: j - 1 };
@@ -32,17 +32,24 @@ function onKeyDown(ev) {
                 dir = { i: i - 1, j };
                 shoot(dir);
                 break;
+            case 'n':
+                gIsNegs = true;
+                break;
+            case 'x':
+                if (gSuperModeCount === 0) return;
+                if (gHero.isShoot) return;
+                gIsSuper = true;
+                dir = { i: i - 1, j };
+                shoot(dir);
+                break;
         }
     }
 }
 
-// Move the hero right (1) or left (-1)
 function moveHero(dir) {
     var i = dir.i;
     var j = dir.j;
-    // console.log(dir);
     if (j < 0 || j > gBoard.length - 1) return;
-    // console.log(targetCell);
 
     updateCell({ i: gHero.pos.i, j: gHero.pos.j }, '');
     gHero.pos.i = i;
@@ -50,15 +57,17 @@ function moveHero(dir) {
     updateCell(dir, HERO);
 }
 
-// Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot(pos) {
-    updateCell(pos, LASER);
-    gLaserInterval = setInterval(function() {
+    if (gIsSuper) {
+        gSuperModeCount--;
+    }
+    var speed = gIsSuper ? SUPER_LASER_SPEED : LASER_SPEED;
+    updateCell(pos, gIsSuper ? SUPER_LASER : LASER);
+    gLaserInterval = setInterval(() => {
         blinkLaser(pos);
-    }, 20)
+    }, speed)
 }
 
-// renders a LASER at specific cell for short time and removes it
 function blinkLaser(pos) {
     gHero.isShoot = true;
 
@@ -72,12 +81,48 @@ function blinkLaser(pos) {
     var elCell = getElCell({ i: pos.i - 1, j: pos.j });
 
     if (elCell.innerHTML === ALIEN) {
+        if (gIsNegs) {
+            blowNegs(pos);
+            gIsNegs = false;
+            gScore -= 10;
+            gGame.aliensCount++;
+
+        }
+        gIsSuper = false;
         elCell.innerHTML = '';
         handleAlienHit(pos);
         return;
     }
 
+    if (elCell.innerHTML === SPACE_CANDY) {
+        gScore += 50;
+        gElScore.innerText = gScore;
+        clearInterval(gIntervalAliens);
+        setTimeout(() => {
+            setInterval(() => {
+                moveAliens();
+            }, ALIEN_SPEED);
+        }, 5000)
+    }
+
     updateCell(pos, '');
     pos.i--;
-    updateCell(pos, LASER);
+    updateCell(pos, gIsSuper ? SUPER_LASER : LASER);
+}
+
+function blowNegs(pos) {
+    var cellI = pos.i;
+    var cellJ = pos.j;
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue;
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (j < 0 || j >= gBoard[0].length) continue;
+            if (i === cellI && j === cellJ) continue;
+            if (gBoard[i][j].gameObject === ALIEN) {
+                updateCell({ i, j }, '');
+                gScore += 10;
+                gGame.aliensCount--;
+            }
+        }
+    }
 }

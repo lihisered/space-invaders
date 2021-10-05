@@ -2,9 +2,6 @@
     box-sizing: border-box;
 }
 
-
-/* #4a4e69 */
-
 body {
     text-align: center;
     background-color: #a1a7cf;
@@ -13,8 +10,8 @@ body {
 
 table {
     margin: auto;
-    width: 500px;
-    height: 500px;
+    width: 450px;
+    height: 450px;
     background-color: white;
     border-collapse: collapse;
 }
@@ -33,10 +30,6 @@ td {
     background-color: #4a4e69;
 }
 
-.win-container {
-    margin-bottom: 12px;
-}
-
 .btn {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     background-color: white;
@@ -44,13 +37,10 @@ td {
     padding: 5px;
     font-size: 15px;
     width: 100px;
+    margin-bottom: 10px;
 }
 
 .btn:hover {
     background-color: #4a4e69;
     cursor: pointer;
-}
-
-.restart-btn {
-    margin-top: 12px;
 }

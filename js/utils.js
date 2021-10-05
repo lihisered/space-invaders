@@ -148,7 +148,7 @@ function addGameElement(gameElement) {
 }
 
 // GET RANDOM EMPTY CELL
-function getEmptyCell() {
+function getEmptyCellUtils() {
     var emptyCells = getEmptyCells();
     if (emptyCells.length === 0 || !emptyCells) return;
     var randIdx = getRandomIntInt(0, emptyCells.length);
@@ -157,7 +157,7 @@ function getEmptyCell() {
 }
 
 // GET ARRAY OF EMPTY CELLS
-function getEmptyCells() {
+function getEmptyCellsUtils() {
     var emptyCells = [];
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
