@@ -78,7 +78,8 @@ function shiftBoardDown(board, fromI, toI) {
 
 function moveAliens() {
     if (gAliensBottomRowIdx === 12) {
-        document.querySelector('h3').innerText = 'GAME OVER 😕';
+        document.querySelector('.game-over').style.display = 'block';
+        document.querySelector('.game-over').innerText = 'GAME OVER 😕';
         console.log('Game over...');
         clearInterval(gIntervalAliens);
         clearInterval(gCandyInterval);

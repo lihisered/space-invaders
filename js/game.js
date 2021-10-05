@@ -11,7 +11,6 @@ const SUPER_LASER = '💧';
 const SPACE_CANDY = '🍓';
 const SKY = 'SKY';
 const EARTH = 'EARTH';
-const WALL = 'WALL';
 
 var gElScore = document.querySelector('h3 span');
 var gCandyInterval;
@@ -23,22 +22,28 @@ var gGame = {
 }
 
 function init() {
-
     gGame.isOn = false;
 
-    gBoard = createBoard();
-    renderBoard(gBoard);
+    shiftRight = 0;
+    shiftLeft = 6;
 
     gAliensTopRowIdx = 0;
     gAliensBottomRowIdx = ALIENS_ROW_COUNT;
 
+    gBoard = createBoard();
+    renderBoard(gBoard);
+
     gScore = 0;
     gElScore.innerText = 0;
     gGame.aliensCount = ALIENS_ROW_COUNT * ALIENS_ROW_LENGTH;
+
+    document.querySelector('.game-over').style.display = 'none';
 }
 
 function start() {
     if (gGame.isOn) return;
+    clearInterval(gIntervalAliens);
+    clearInterval(gCandyInterval)
     gGame.isOn = true;
 
     gCandyInterval = setInterval(() => {
@@ -51,6 +56,7 @@ function start() {
 }
 
 function restart() {
+    if (gGame.isOn) return;
     init();
 }
 
@@ -107,8 +113,9 @@ function checkIsVictory() {
         }
     }
     console.log('VICTORY 🏆');
-    document.querySelector('h3').innerText = 'VICTORY! 🏆';
     gGame.isOn = false;
+    document.querySelector('.game-over').style.display = 'block';
+    document.querySelector('.game-over').innerText = 'VICTORY! 🏆';
     clearInterval(gIntervalAliens);
     clearInterval(gCandyInterval);
     return;
