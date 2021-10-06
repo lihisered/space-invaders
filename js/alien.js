@@ -77,12 +77,14 @@ function shiftBoardDown(board, fromI, toI) {
         for (var j = 0; j < board[i].length; j++) {
             if (board[i][j].gameObject === ALIEN1) {
                 addAlien(board, i + 1, j, ALIEN1);
+                board[i][j].gameObject = '';
             } else if (board[i][j].gameObject === ALIEN2) {
                 addAlien(board, i + 1, j, ALIEN2);
+                board[i][j].gameObject = '';
             } else if (board[i][j].gameObject === ALIEN3) {
                 addAlien(board, i + 1, j, ALIEN3);
+                board[i][j].gameObject = '';
             }
-            board[i][j].gameObject = '';
         }
     }
     renderBoard(board);
