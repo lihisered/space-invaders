@@ -1,9 +1,9 @@
 'use strict';
 console.log('HERO');
 
-var gLaserInterval;
 const LASER_SPEED = 30;
 const SUPER_LASER_SPEED = 10;
+var gLaserInterval;
 var gSuperModeCount = 3;
 var gHero = { pos: { i: 12, j: 5 }, isShoot: false };
 var gIsNegs = false;
@@ -80,13 +80,14 @@ function blinkLaser(pos) {
 
     var elCell = getElCell({ i: pos.i - 1, j: pos.j });
 
-    if (elCell.innerHTML === ALIEN) {
+    if (elCell.innerHTML === ALIEN1 ||
+        elCell.innerHTML === ALIEN2 ||
+        elCell.innerHTML === ALIEN3) {
         if (gIsNegs) {
             blowNegs(pos);
             gIsNegs = false;
             gScore -= 10;
             gGame.aliensCount++;
-
         }
         gIsSuper = false;
         elCell.innerHTML = '';
@@ -118,7 +119,9 @@ function blowNegs(pos) {
         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
             if (j < 0 || j >= gBoard[0].length) continue;
             if (i === cellI && j === cellJ) continue;
-            if (gBoard[i][j].gameObject === ALIEN) {
+            if (gBoard[i][j].gameObject === ALIEN1 ||
+                gBoard[i][j].gameObject === ALIEN2 ||
+                gBoard[i][j].gameObject === ALIEN3) {
                 updateCell({ i, j }, '');
                 gScore += 10;
                 gGame.aliensCount--;

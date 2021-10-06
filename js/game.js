@@ -4,11 +4,13 @@ console.log('Space Invaders');
 const BOARD_SIZE = 14;
 const ALIENS_ROW_LENGTH = 8;
 const ALIENS_ROW_COUNT = 3;
-const HERO = '🦍';
-const ALIEN = '🛸';
+const HERO = '🛸';
+const ALIEN1 = '🦍';
+const ALIEN2 = '🐘';
+const ALIEN3 = '🦕';
 const LASER = '🧪';
 const SUPER_LASER = '💧';
-const SPACE_CANDY = '🍓';
+const SPACE_CANDY = '🍇';
 const SKY = 'SKY';
 const EARTH = 'EARTH';
 
@@ -23,9 +25,7 @@ var gGame = {
 
 function init() {
     gGame.isOn = false;
-
-    shiftRight = 0;
-    shiftLeft = 6;
+    gIsRight = true;
 
     gAliensTopRowIdx = 0;
     gAliensBottomRowIdx = ALIENS_ROW_COUNT;
@@ -57,7 +57,9 @@ function start() {
 
 function restart() {
     if (gGame.isOn) return;
-    init();
+    // start();
+    // init();
+    window.location.reload();
 }
 
 function createBoard() {
@@ -109,16 +111,22 @@ function updateCell(pos, gameObject = null) {
 function checkIsVictory() {
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[i].length; j++) {
-            if (gBoard[i][j].gameObject === ALIEN) return;
+            if (gBoard[i][j].gameObject === ALIEN1 ||
+                gBoard[i][j].gameObject === ALIEN2 ||
+                gBoard[i][j].gameObject === ALIEN3) return;
         }
     }
-    console.log('VICTORY 🏆');
-    gGame.isOn = false;
+    endGame('VICTORY! 🏆');
+}
+
+function endGame(txt) {
+    console.log(txt);
     document.querySelector('.game-over').style.display = 'block';
-    document.querySelector('.game-over').innerText = 'VICTORY! 🏆';
+    document.querySelector('.game-over').innerText = txt;
     clearInterval(gIntervalAliens);
     clearInterval(gCandyInterval);
-    return;
+    gCandyInterval = null;
+    gGame.isOn = false;
 }
 
 function addSpaceCandy() {
