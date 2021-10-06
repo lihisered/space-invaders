@@ -1,0 +1,37 @@
+body {
+    text-align: center;
+    color: black;
+    font-family: monospace;
+    background: linear-gradient(to bottom, #eeeee6, #dfabab) no-repeat center / cover fixed;
+}
+
+h2 {
+    visibility: hidden;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+td {
+    height: 30px;
+    width: 30px;
+}
+
+button {
+    font-family: monospace;
+}
+
+span {
+    color: rgb(48, 148, 39);
+}
+
+.sky {
+    background: linear-gradient(to bottom, #686666, #030303) no-repeat center / cover fixed;
+    /* background-color: rgb(48, 48, 51); */
+}
+
+.ground {
+    background-color: rgb(12, 12, 12);
+}
